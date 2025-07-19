@@ -5,6 +5,7 @@ import com.example.patientdonation.entity.Donation;
 import com.example.patientdonation.entity.Patient;
 import com.example.patientdonation.repository.DonationRepository;
 import com.example.patientdonation.repository.PatientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,8 +13,12 @@ import java.util.List;
 @Service
 public class DonationService {
 
+    @Autowired
     public DonationRepository donationRepository;
+
+    @Autowired
     public PatientRepository patientRepository;
+
     public Double getTotalDonationForPatient(Long patientId) {
         return donationRepository.getTotalDonatedAmountByPatientId(patientId);
     }
@@ -56,6 +61,15 @@ public class DonationService {
         }
 
         return dtos;
+    }
+
+    public List<Donation> getDonationForPatient(Long patientId)
+    {
+        return donationRepository.findByPatientId(patientId);
+    }
+
+    public List<Donation> getRecentDonations(){
+        return donationRepository.findTop5ByStatusOrderByCreatedAtDesc("SUCCESS");
     }
 
 

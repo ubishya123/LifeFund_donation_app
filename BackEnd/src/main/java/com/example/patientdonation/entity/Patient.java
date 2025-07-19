@@ -19,10 +19,35 @@ public class Patient {
     private String accountNumber;
     private String ifscCode;
     private String phoneNumber;
-    private Double requriedAmount;
+    private Double requiredAmount;
     private Double receivedAmount=0.0;
     private String reportFileUrl;
+    private String email;
+    private String linkedaccountid;
 
+    public String getLinkedAccountId() {
+        return linkedaccountid;
+    }
+
+    public void setLinkedAccountId(String linkedaccountid) {
+        this.linkedaccountid = linkedaccountid;
+    }
+
+    public Double getRequiredAmount() {
+        return requiredAmount;
+    }
+
+    public void setRequiredAmount(Double requiredAmount) {
+        this.requiredAmount = requiredAmount;
+    }
+
+    public String getLinkedaccountid() {
+        return linkedaccountid;
+    }
+
+    public void setLinkedaccountid(String linkedaccountid) {
+        this.linkedaccountid = linkedaccountid;
+    }
 
     @Column(name="report_file_path")
     private String reportFilePath;
@@ -111,13 +136,6 @@ public class Patient {
         this.reportFileUrl = reportFileUrl;
     }
 
-    public Double getRequriedAmount() {
-        return requriedAmount;
-    }
-
-    public void setRequriedAmount(Double requriedAmount) {
-        this.requriedAmount = requriedAmount;
-    }
 
     public Double getReceivedAmount() {
         return receivedAmount;
@@ -133,5 +151,13 @@ public class Patient {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

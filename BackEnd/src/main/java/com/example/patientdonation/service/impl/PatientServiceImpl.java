@@ -4,17 +4,24 @@ import com.example.patientdonation.dto.PatientDTO;
 import com.example.patientdonation.entity.Patient;
 import com.example.patientdonation.repository.PatientRepository;
 import com.example.patientdonation.service.PatientService;
+import com.razorpay.RazorpayException;
 import jdk.dynalink.linker.LinkerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientServiceImpl implements PatientService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private RazorpayService razorpayService;
+
+
 
     @Override
     public Patient addPatient(PatientDTO dto)
@@ -28,9 +35,21 @@ public class PatientServiceImpl implements PatientService {
         patient.setIfscCode(dto.getIfscCode());
         patient.setPhoneNumber(dto.getPhoneNumber());
         patient.setReportFileUrl(dto.getReportFileUrl());
-        patient.setRequriedAmount(dto.getRequiredAmount());
+        patient.setRequiredAmount(dto.getRequiredAmount());
+        patient.setEmail(dto.getEmail());
 
-        return patientRepository.save(patient);
+        patientRepository.save(patient);
+
+        try {
+            // You'll need to implement this method in RazorpayService
+            String linkedAccountId = razorpayService.createLinkedAccount(patient);
+            patient.setLinkedAccountId(dto.getLinkedaccountid()); // Add this field to your Patient entity
+            patientRepository.save(patient);
+        } catch (RazorpayException e) {
+            // Handle exception
+        }
+
+        return patient;
     }
 
     @Override
@@ -48,5 +67,9 @@ public class PatientServiceImpl implements PatientService {
     public Patient updatePatient(Patient patient)
     {
         return patientRepository.save(patient);
+    }
+
+    public List<Patient> getFeaturedPatients(){
+        return patientRepository.findFeaturedPatients().stream().limit(3).collect(Collectors.toList());
     }
 }

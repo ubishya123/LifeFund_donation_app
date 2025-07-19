@@ -10,6 +10,7 @@ public interface PatientService {
     Patient addPatient(PatientDTO dto);
     List<Patient> getAllPatients();
     Patient getPatientById(Long id);
-
+    List<Patient> getFeaturedPatients();
     Patient updatePatient(Patient patient);
+
 }

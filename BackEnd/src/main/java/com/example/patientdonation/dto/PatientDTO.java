@@ -11,6 +11,24 @@ public class PatientDTO {
     private String phoneNumber;
     private String reportFileUrl;
     private Double requiredAmount;
+    private String email;
+    private String linkedaccountid;
+
+    public String getLinkedaccountid() {
+        return linkedaccountid;
+    }
+
+    public void setLinkedaccountid(String linkedaccountid) {
+        this.linkedaccountid = linkedaccountid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getName() {
         return name;

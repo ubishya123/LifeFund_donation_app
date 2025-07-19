@@ -14,4 +14,8 @@ public interface DonationRepository extends JpaRepository<Donation,Long> {
 
     List<Donation> findByDonorEmail(String donorEmail);
 
+    List<Donation> findByPatientId(Long patientId);
+
+    List<Donation> findTop5ByStatusOrderByCreatedAtDesc(String status);
+
 }

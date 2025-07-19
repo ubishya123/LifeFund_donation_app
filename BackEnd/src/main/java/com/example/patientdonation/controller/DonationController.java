@@ -2,16 +2,21 @@ package com.example.patientdonation.controller;
 import com.example.patientdonation.dto.DonationDetailDTO;
 import com.example.patientdonation.entity.Donation;
 import com.example.patientdonation.entity.Patient;
+import com.example.patientdonation.entity.User;
 import com.example.patientdonation.repository.DonationRepository;
 import com.example.patientdonation.repository.PatientRepository;
 import com.example.patientdonation.service.impl.DonationService;
 import com.example.patientdonation.service.impl.RazorpayService;
 import com.razorpay.Order;
+import org.springframework.security.core.Authentication;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
 import java.util.Optional;
 @RestController
 @RequestMapping("/api/donation")
@@ -35,6 +40,23 @@ public class DonationController {
             @RequestParam String donorEmail,   // NEW
             @RequestParam(required = false) String donorName // Optional
     ) throws Exception {
+        Patient patient=patientRepository.findById(patientId)
+                .orElseThrow(()->new RuntimeException("Patient Not Fount"));
+
+        //The 'transfer' parameter is used for rounting payments.
+        JSONObject orderRequest=new JSONObject();
+        orderRequest.put("amount",amount*100);
+        orderRequest.put("currency","INR");
+
+        JSONArray transfers=new JSONArray();
+        JSONObject transfer=new JSONObject();
+        transfer.put("account",patient.getLinkedAccountId());
+        transfer.put("amount",amount*100);
+        transfer.put("currency","INR");
+        transfers.put(transfer);
+
+        orderRequest.put("transfers",transfers);
+
         Order order = razorpayService.createOrder(amount);
 
         Donation donation = new Donation();
@@ -103,6 +125,21 @@ public class DonationController {
     @GetMapping("/all-details")
     public ResponseEntity<List<DonationDetailDTO>> getAllDonationDetails() {
         return ResponseEntity.ok(donationService.getAllDonationDetails());
+    }
+
+    @GetMapping("/recent")
+    public ResponseEntity<List<Donation>> getRecentDonations(){
+        List<Donation> recentDonations=donationService.getRecentDonations();
+        return ResponseEntity.ok(recentDonations);
+    }
+
+    @GetMapping("/my-history")
+    public ResponseEntity<List<Donation>> getMyDonationHistory(){
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        User currentUser= (User) authentication.getPrincipal();
+
+        List<Donation> myDonations=donationService.getDonationsByEmail(currentUser.getEmail());
+        return ResponseEntity.ok(myDonations);
     }
 
 

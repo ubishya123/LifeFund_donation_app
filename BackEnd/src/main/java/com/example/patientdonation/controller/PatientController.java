@@ -1,5 +1,6 @@
 package com.example.patientdonation.controller;
 import com.example.patientdonation.dto.PatientDonationStatusDTO;
+import com.example.patientdonation.entity.Donation;
 import com.example.patientdonation.repository.PatientRepository;
 import com.example.patientdonation.dto.PatientDTO;
 import com.example.patientdonation.entity.Patient;
@@ -72,15 +73,28 @@ public class PatientController {
     public List<PatientDonationStatusDTO> getDonationStatusForAllPatients() {
         List<Patient> patients = patientService.getAllPatients();
         return patients.stream().map(patient -> {
-            double remaining = patient.getRequriedAmount() - patient.getReceivedAmount();
+            double remaining = patient.getRequiredAmount() - patient.getReceivedAmount();
             return new PatientDonationStatusDTO(
                     patient.getId(),
                     patient.getName(),
-                    patient.getRequriedAmount(),
+                    patient.getRequiredAmount(),
                     patient.getReceivedAmount(),
                     remaining < 0 ? 0 : remaining
             );
         }).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{patientId}/donations")
+    public ResponseEntity<List<Donation>> getDonationForPatient(@PathVariable Long patientId){
+        List<Donation> donations=donationService.getDonationForPatient(patientId);
+        return ResponseEntity.ok(donations);
+    }
+
+    @GetMapping("/featured")
+    public ResponseEntity<List<Patient>> getFeaturedPatients() {
+        List<Patient> featured=patientService.getFeaturedPatients();
+        return ResponseEntity.ok(featured);
+
     }
 
 
