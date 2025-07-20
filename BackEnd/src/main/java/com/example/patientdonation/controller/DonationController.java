@@ -18,10 +18,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/donation")
+@CrossOrigin(origins = "*") // Added CrossOrigin
 public class DonationController {
 
     @Autowired
@@ -37,11 +40,11 @@ public class DonationController {
     private DonationService donationService;
 
     @PostMapping("/create-order/{patientId}")
-    public String createOrder(
-            @PathVariable Long patientId,
-            @RequestParam int amount,
-            @RequestParam String donorEmail,
-            @RequestParam(required = false) String donorName) throws RazorpayException {
+    public ResponseEntity<Map<String, Object>> createOrder( // Changed return type
+                                                            @PathVariable Long patientId,
+                                                            @RequestParam int amount,
+                                                            @RequestParam String donorEmail,
+                                                            @RequestParam(required = false) String donorName) throws RazorpayException {
 
         // 1. Fetch the patient to get their Linked Account ID.
         Patient patient = patientRepository.findById(patientId)
@@ -74,9 +77,14 @@ public class DonationController {
         donation.setDonorName(donorName != null ? donorName : "Anonymous");
         donation.setPatient(patient);
 
-        donationRepository.save(donation);
+        Donation savedDonation = donationRepository.save(donation);
 
-        return order.toString();
+        // 5. Create a response map to send back to the frontend
+        Map<String, Object> response = new HashMap<>();
+        response.put("order", new JSONObject(order.toString()).toMap());
+        response.put("donationId", savedDonation.getId()); // Include the donation ID
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/verify")
