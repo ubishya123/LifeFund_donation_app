@@ -40,7 +40,7 @@ const handleDonate = async (e) => {
       handler: async function (response) {
         // Step 3: Verify the payment on your backend
         try {
-          await axios.post('/api/donation/verify', null, {
+          await axios.post('/api/donation/verify', {}, {
             params: {
               razorpayOrderId: response.razorpay_order_id,
               razorpayPaymentId: response.razorpay_payment_id,
