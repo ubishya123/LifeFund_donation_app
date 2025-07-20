@@ -6,6 +6,7 @@ public class DonationDetailDTO {
     private String patientName;
     private double amount;
 
+
     public String getDonorEmail() {
         return donorEmail;
     }

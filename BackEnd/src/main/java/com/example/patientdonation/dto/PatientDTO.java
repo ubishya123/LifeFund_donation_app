@@ -1,5 +1,7 @@
 package com.example.patientdonation.dto;
 
+import jakarta.validation.constraints.Email;
+
 public class PatientDTO {
 
     private String name;
@@ -11,7 +13,10 @@ public class PatientDTO {
     private String phoneNumber;
     private String reportFileUrl;
     private Double requiredAmount;
+
+    @Email(message = "please provide the valid email")
     private String email;
+
     private String linkedaccountid;
 
     public String getLinkedaccountid() {
