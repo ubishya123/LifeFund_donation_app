@@ -114,7 +114,7 @@ const PatientDashboard = () => {
         {myCampaign.reportFileUrl && (
           <div className="mt-4">
             <p className="text-gray-700">Current Report: 
-              <a href={`http://localhost:8080/${myCampaign.reportFileUrl}`} target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:underline ml-2">
+              <a href={`/${myCampaign.reportFileUrl}`} target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:underline ml-2">
                 View Uploaded Report
               </a>
             </p>

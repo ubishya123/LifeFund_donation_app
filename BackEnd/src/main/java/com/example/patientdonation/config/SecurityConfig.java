@@ -33,7 +33,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // Allow public GET requests for patients, comments, and uploads
+                        .requestMatchers(HttpMethod.GET, "/api/patients/**", "/uploads/**").permitAll()
+                        // Allow public registration
                         .requestMatchers("/api/auth/**").permitAll()
+                        // Require authentication for all other requests
                         .anyRequest().authenticated()
                 )
                 // Pass the userService to the filter

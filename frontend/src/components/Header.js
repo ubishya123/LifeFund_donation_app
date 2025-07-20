@@ -6,6 +6,13 @@ const Header = () => {
   const { user, logout } = useAuth();
   // ... other code
 
+   const navigate = useNavigate(); // Add this
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login'); // Redirect to login page after logout
+  };
+
   const getDashboardPath = () => {
     if (!user) return '/';
     if (user.role === 'ADMIN') return '/dashboard/admin';

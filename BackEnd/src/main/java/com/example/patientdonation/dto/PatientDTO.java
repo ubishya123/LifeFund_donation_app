@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Email;
 public class PatientDTO {
 
     private String name;
-    private String diseases;
+    private String disease;
     private String hospital;
     private String adharNumber;
     private String accountNumber;
@@ -43,12 +43,12 @@ public class PatientDTO {
         this.name = name;
     }
 
-    public String getDiseases() {
-        return diseases;
+    public String getDisease() {
+        return disease;
     }
 
-    public void setDiseases(String diseases) {
-        this.diseases = diseases;
+    public void setDisease(String disease) {
+        this.disease = disease;
     }
 
     public String getHospital() {

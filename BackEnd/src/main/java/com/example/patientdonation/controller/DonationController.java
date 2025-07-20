@@ -140,8 +140,7 @@ public class DonationController {
     @GetMapping("/my-history")
     public ResponseEntity<List<Donation>> getMyDonationHistory() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-
+        com.example.patientdonation.entity.User currentUser = (com.example.patientdonation.entity.User) authentication.getPrincipal();
         List<Donation> myDonations = donationService.getDonationsByEmail(currentUser.getEmail());
         return ResponseEntity.ok(myDonations);
     }

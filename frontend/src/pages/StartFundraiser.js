@@ -66,7 +66,7 @@ const StartFundraiser = () => {
               {/* Form fields for each property in the PatientDTO */}
               <div className="md:col-span-2">
                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Full Name</label>
-                 <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"/>
+                 <input type="text" name="disease" id="disease" value={formData.disease} onChange={handleChange} required className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"/>
               </div>
               <div>
                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="diseases">Disease/Condition</label>

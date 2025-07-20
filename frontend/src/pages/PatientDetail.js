@@ -66,11 +66,11 @@ const PatientDetail = () => {
             {/* Conditionally render the report button if the URL exists */}
             {patient.reportFileUrl && (
               <a
-                href={`http://localhost:8080/${patient.reportFileUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-gray-200 text-gray-800 text-center w-full md:w-auto px-10 py-4 rounded-full font-bold text-xl hover:bg-gray-300 transition-all"
-              >
+                 href={`/${patient.reportFileUrl}`}
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="bg-gray-200 text-gray-800 text-center w-full md:w-auto px-10 py-4 rounded-full font-bold text-xl hover:bg-gray-300 transition-all"
+                >
                 View Medical Report
               </a>
             )}

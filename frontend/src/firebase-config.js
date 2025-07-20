@@ -3,13 +3,12 @@ import { getAuth } from "firebase/auth";
 
 // Paste your Firebase config object here
 const firebaseConfig = {
-  apiKey: "AIzaSyCN_0HnpFvzsAjkQUjLc1iZcRZCSMROisM",
-  authDomain: "lifefund-donation-app.firebaseapp.com",
-  projectId: "lifefund-donation-app",
-  storageBucket: "lifefund-donation-app.firebasestorage.app",
-  messagingSenderId: "590351127142",
-  appId: "1:590351127142:web:0e674404f5c837429d93a7",
-  measurementId: "G-3QE4SES9J3"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

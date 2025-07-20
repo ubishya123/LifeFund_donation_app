@@ -28,12 +28,14 @@ const Login = () => {
       login(userData, token);
 
       if (userData.role === 'ADMIN') {
-        navigate('/dashboard/admin');
-      } else if (userData.role === 'DONOR') {
-        navigate('/dashboard/donor');
-      } else {
-        navigate('/');
-      }
+  navigate('/dashboard/admin');
+} else if (userData.role === 'DONOR') {
+  navigate('/dashboard/donor');
+} else if (userData.role === 'PATIENT') {
+  navigate('/dashboard/patient');
+} else {
+  navigate('/');
+}
 
     } catch (err) {
       setError('Invalid email or password.');

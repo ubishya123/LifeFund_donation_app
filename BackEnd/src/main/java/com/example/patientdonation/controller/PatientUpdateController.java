@@ -17,8 +17,9 @@ public class PatientUpdateController {
 
     // Endpoint for patients to post a new update
     @PostMapping
-    public ResponseEntity<PatientUpdate> addUpdate(@PathVariable Long patientId, @RequestBody PatientUpdate update) {
-        // In a real app, you would also verify that the logged-in user's ID
+    public ResponseEntity<PatientUpdate> addUpdate(@PathVariable Long patientId, @RequestBody java.util.Map<String, String> payload) {
+        PatientUpdate update = new PatientUpdate();
+        update.setContent(payload.get("content"));        // In a real app, you would also verify that the logged-in user's ID
         // matches the patientId to ensure they can only post updates for themselves.
         PatientUpdate savedUpdate = patientUpdateService.addUpdate(patientId, update);
         return ResponseEntity.ok(savedUpdate);

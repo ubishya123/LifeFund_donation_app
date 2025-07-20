@@ -10,24 +10,69 @@ const Donate = () => {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
 
-  const handleDonate = async (e) => {
-    e.preventDefault();
-    if (!amount || amount <= 0) {
-      setError('Please enter a valid amount.');
-      return;
-    }
-    setError('');
+    // In frontend/src/pages/Donate.js
 
-    try {
-      const response = await axios.post(`/api/donation/create-order/${id}?amount=${amount}&donorEmail=${email}&donorName=${name || 'Anonymous'}`);
-      console.log('Order created:', response.data);
-      alert('Donation process initiated! Integrating Razorpay checkout is the next step.');
-      navigate(`/patient/${id}`);
-    } catch (err) {
-      setError('Could not initiate donation. Please try again.');
-      console.error('Error creating donation order:', err);
-    }
-  };
+const handleDonate = async (e) => {
+  e.preventDefault();
+  if (!amount || amount <= 0) {
+    setError('Please enter a valid amount.');
+    return;
+  }
+  setError('');
+
+  try {
+    // Step 1: Create the order on your backend
+    const orderResponse = await axios.post(`/api/donation/create-order/${id}?amount=${amount}&donorEmail=${email}&donorName=${name || 'Anonymous'}`);
+    const orderData = orderResponse.data;
+
+    // Find the donation ID from the response (you'll need to check your backend response structure)
+    // Assuming your backend response includes the donation object you saved
+    const donationId = orderData.donationId; // You might need to adjust this key based on your backend response
+
+    // Step 2: Configure Razorpay options
+    const options = {
+      key: process.env.REACT_APP_RAZORPAY_KEY_ID, // You need to add this to your .env file
+      amount: orderData.amount,
+      currency: orderData.currency,
+      name: "LifeFund Donation",
+      description: `Donation to patient ${id}`,
+      order_id: orderData.id,
+      handler: async function (response) {
+        // Step 3: Verify the payment on your backend
+        try {
+          await axios.post('/api/donation/verify', null, {
+            params: {
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+              donationId: donationId
+            }
+          });
+          alert('Donation successful!');
+          navigate(`/patient/${id}`);
+        } catch (verifyError) {
+          setError('Payment verification failed. Please contact support.');
+          console.error('Error verifying payment:', verifyError);
+        }
+      },
+      prefill: {
+        name: name,
+        email: email,
+      },
+      theme: {
+        color: '#3399cc'
+      }
+    };
+
+    // Step 4: Open the Razorpay checkout modal
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+
+  } catch (err) {
+    setError('Could not initiate donation. Please try again.');
+    console.error('Error creating donation order:', err);
+  }
+};
 
   return (
     <div className="py-20 bg-gray-50">

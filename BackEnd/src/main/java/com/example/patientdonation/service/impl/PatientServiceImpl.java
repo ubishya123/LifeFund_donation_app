@@ -34,7 +34,7 @@ public class PatientServiceImpl implements PatientService {
         // 1. Create the patient object in memory from the DTO.
         Patient patient = new Patient();
         patient.setName(dto.getName());
-        patient.setDisease(dto.getDiseases());
+        patient.setDisease(dto.getDisease());
         patient.setHospital(dto.getHospital());
         patient.setAdharNumber(dto.getAdharNumber());
         patient.setAccountNumber(dto.getAccountNumber());

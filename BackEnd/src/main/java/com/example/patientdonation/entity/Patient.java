@@ -41,13 +41,7 @@ public class Patient {
         this.requiredAmount = requiredAmount;
     }
 
-    public String getLinkedaccountid() {
-        return linkedaccountid;
-    }
 
-    public void setLinkedaccountid(String linkedaccountid) {
-        this.linkedaccountid = linkedaccountid;
-    }
 
     @Column(name="report_file_path")
     private String reportFilePath;
