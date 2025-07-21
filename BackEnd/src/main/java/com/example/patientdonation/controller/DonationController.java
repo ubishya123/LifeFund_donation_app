@@ -94,29 +94,18 @@ public class DonationController {
             @RequestParam String razorpaySignature,
             @RequestParam Long donationId) {
 
-        // The secret key is handled securely inside the RazorpayService.
         boolean verified = razorpayService.verifySignature(razorpayOrderId, razorpayPaymentId, razorpaySignature);
 
         if (verified) {
-            Donation donation = donationRepository.findById(donationId).orElse(null);
-            if (donation != null) {
-                donation.setStatus("SUCCESS");
-                donation.setRazorpayPaymentId(razorpayPaymentId);
-                donation.setRazorpaySignature(razorpaySignature);
-
-                // Update donated amount in the patient record
-                Patient patient = donation.getPatient();
-                patient.setReceivedAmount(patient.getReceivedAmount() + donation.getAmount());
-
-                patientRepository.save(patient);
-                donationRepository.save(donation);
-            }
-            return "Payment verified successfully";
+            boolean processed = donationService.verifyAndProcessPayment(razorpayOrderId, razorpayPaymentId, razorpaySignature, donationId);
+            return processed ? "Payment verified successfully" : "Failed to process donation record.";
         } else {
             return "Payment verification failed";
         }
     }
 
+
+    
     @GetMapping("/total-donation/{patientId}")
     public ResponseEntity<Double> getTotalDonation(@PathVariable Long patientId) {
         Double total = donationService.getTotalDonationForPatient(patientId);
