@@ -9,7 +9,6 @@ const PatientDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // This function already fetches the patient data, including the report URL
     const fetchPatientData = async () => {
       try {
         setLoading(true);
@@ -31,30 +30,28 @@ const PatientDetail = () => {
   if (loading) return <div className="text-center py-10">Loading patient details...</div>;
   if (!patient) return <div className="text-center py-10 text-red-500">Could not find patient data.</div>;
 
-  const percentage = Math.min((patient.receivedAmount / patient.requiredAmount) * 100, 100);
+  const receivedAmount = patient.receivedAmount || 0;
+  const requiredAmount = patient.requiredAmount || 0;
+  const percentage = requiredAmount > 0 ? Math.min((receivedAmount / requiredAmount) * 100, 100) : 0;
 
   return (
     <div className="bg-gray-50 py-20">
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-xl p-8 max-w-4xl mx-auto">
-          {/* ... (existing code for name, diagnosis, hospital) ... */}
           <h2 className="text-4xl font-bold text-gray-800 mb-2">{patient.name}</h2>
           <p className="text-xl text-gray-600 mb-4">Diagnosis: {patient.disease}</p>
           <p className="text-lg text-gray-500 mb-6">Receiving treatment at: {patient.hospital}</p>
 
-          {/* ... (existing code for progress bar and donation amounts) ... */}
            <div className="mb-8">
             <div className="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700">
               <div className="bg-green-500 h-4 rounded-full" style={{ width: `${percentage}%` }}></div>
             </div>
             <div className="flex justify-between text-lg text-gray-700 mt-3">
-              <span className="font-bold">Raised: ₹{patient.receivedAmount.toLocaleString()}</span>
-              <span className="font-bold">Goal: ₹{patient.requiredAmount.toLocaleString()}</span>
+              <span className="font-bold">Raised: ₹{receivedAmount.toLocaleString()}</span>
+              <span className="font-bold">Goal: ₹{requiredAmount.toLocaleString()}</span>
             </div>
           </div>
 
-
-          {/* --- NEW SECTION FOR BUTTONS --- */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
             <Link
               to={`/donate/${patient.id}`}
@@ -63,7 +60,6 @@ const PatientDetail = () => {
               Donate Now
             </Link>
             
-            {/* Conditionally render the report button if the URL exists */}
             {patient.reportFileUrl && (
               <a
                  href={`/${patient.reportFileUrl}`}
@@ -75,9 +71,7 @@ const PatientDetail = () => {
               </a>
             )}
           </div>
-          {/* --- END OF NEW SECTION --- */}
 
-          {/* ... (existing code for comments section) ... */}
            <div className="mt-12">
             <h3 className="text-2xl font-bold text-gray-800 mb-4">Words of Support</h3>
             <div className="space-y-4">

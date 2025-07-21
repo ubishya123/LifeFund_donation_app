@@ -4,13 +4,11 @@ import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
   const { user, logout } = useAuth();
-  // ... other code
-
-   const navigate = useNavigate(); // Add this
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    navigate('/login'); // Redirect to login page after logout
+    navigate('/login');
   };
 
   const getDashboardPath = () => {
@@ -22,11 +20,12 @@ const Header = () => {
   }
 
   return (
-    <header /* ... */ >
-      <div /* ... */ >
+    <header className="bg-white shadow-md fixed w-full z-10">
+      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         <Link to="/" className="text-3xl font-bold text-teal-600">LifeFund</Link>
         <nav className="space-x-6 flex items-center">
-          {/* ... other links */}
+          <Link to="/patients" className="text-gray-700 hover:text-teal-600">All Fundraisers</Link>
+          
           {user && user.role === 'PATIENT' && (
              <Link to="/start-fundraiser" className="bg-teal-500 text-white px-5 py-2 rounded-full font-semibold hover:bg-teal-600">
                 Start a Fundraiser
@@ -42,7 +41,10 @@ const Header = () => {
             </>
           ) : (
             <>
-              {/* ... Login/Register Links */}
+              <Link to="/login" className="text-gray-700 hover:text-teal-600">Login</Link>
+              <Link to="/register" className="bg-teal-500 text-white px-5 py-2 rounded-full font-semibold hover:bg-teal-600">
+                Register
+              </Link>
             </>
           )}
         </nav>

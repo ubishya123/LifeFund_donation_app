@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const PatientCard = ({ patient }) => {
-  const percentage = Math.min((patient.receivedAmount / patient.requiredAmount) * 100, 100);
+  const receivedAmount = patient.receivedAmount || 0;
+  const requiredAmount = patient.requiredAmount || 0;
+  const percentage = requiredAmount > 0 ? Math.min((receivedAmount / requiredAmount) * 100, 100) : 0;
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 ease-in-out flex flex-col">
@@ -17,8 +19,8 @@ const PatientCard = ({ patient }) => {
             ></div>
           </div>
           <div className="flex justify-between text-sm text-gray-600 mt-2">
-            <span className="font-semibold">Raised: ₹{patient.receivedAmount.toLocaleString()}</span>
-            <span className="font-semibold">Goal: ₹{patient.requiredAmount.toLocaleString()}</span>
+            <span className="font-semibold">Raised: ₹{receivedAmount.toLocaleString()}</span>
+            <span className="font-semibold">Goal: ₹{requiredAmount.toLocaleString()}</span>
           </div>
         </div>
       </div>
