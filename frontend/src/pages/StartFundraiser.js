@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 const StartFundraiser = () => {
   const [formData, setFormData] = useState({
     name: '',
-    diseases: '',
+    disease: '',
     hospital: '',
     adharNumber: '',
     accountNumber: '',
@@ -46,7 +46,9 @@ const StartFundraiser = () => {
       // The PatientService in the backend handles creating the patient record.
       await axios.post('/api/patients/add', patientData);
       
-      alert('Fundraiser created successfully!');
+      // Use a more user-friendly confirmation instead of alert()
+      // For simplicity, we'll keep alert for now, but a modal would be better.
+      alert('Fundraiser created successfully! It will be reviewed by our team.');
       navigate('/dashboard/patient'); // Redirect to their new dashboard
     } catch (err) {
       setError('Failed to create fundraiser. Please check your details and try again.');
@@ -63,14 +65,15 @@ const StartFundraiser = () => {
           <form onSubmit={handleSubmit}>
             {/* Create a grid for a nice form layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Form fields for each property in the PatientDTO */}
+              {/* --- CORRECTED Full Name Input --- */}
               <div className="md:col-span-2">
                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Full Name</label>
-                 <input type="text" name="disease" id="disease" value={formData.disease} onChange={handleChange} required className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"/>
+                 <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"/>
               </div>
+              {/* --- CORRECTED Disease/Condition Input --- */}
               <div>
-                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="diseases">Disease/Condition</label>
-                 <input type="text" name="diseases" id="diseases" value={formData.diseases} onChange={handleChange} required className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"/>
+                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="disease">Disease/Condition</label>
+                 <input type="text" name="disease" id="disease" value={formData.disease} onChange={handleChange} required className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"/>
               </div>
                <div>
                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="hospital">Hospital Name</label>
@@ -83,6 +86,11 @@ const StartFundraiser = () => {
                <div>
                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Phone Number</label>
                  <input type="tel" name="phoneNumber" id="phoneNumber" value={formData.phoneNumber} onChange={handleChange} required className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"/>
+              </div>
+              {/* --- ADDED Adhar Number Input --- */}
+              <div>
+                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="adharNumber">Aadhar Number</label>
+                 <input type="text" name="adharNumber" id="adharNumber" value={formData.adharNumber} onChange={handleChange} required className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5"/>
               </div>
                <div className="md:col-span-2">
                  <h3 className="text-xl font-semibold text-gray-700 mt-6 mb-4 border-t pt-6">Bank Details for Fund Transfer</h3>
